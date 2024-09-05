@@ -8,6 +8,7 @@ const error = require("./utils/error");
 // Import custom routes
 const courses = require("./routes/courses");
 const assignments = require("./routes/assignments");
+const submissions = require("./routes/submissions");
 
 // Parsing Body Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 // Routing Middlewares
 app.use("/courses", courses);
 app.use("/assignments", assignments);
+app.use("/submissions", submissions);
 
 // 404 Middleware
 app.use((req, res, next) => {
