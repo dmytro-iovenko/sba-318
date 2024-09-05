@@ -19,6 +19,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Error-handling Middleware
+// Any call to next() that includes an Error() will skip regular middleware
+// and only be processed by error-handling middleware.
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({ error: err.message });
+  console.error(err);
+});
+
 // Start express server
 app.listen(3000, () => {
   console.log("Server is running on port:", port);
