@@ -9,6 +9,7 @@ const error = require("./utils/error");
 const courses = require("./routes/courses");
 const assignments = require("./routes/assignments");
 const submissions = require("./routes/submissions");
+const learners = require("./routes/learners");
 
 // Parsing Body Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use("/courses", courses);
 app.use("/assignments", assignments);
 app.use("/submissions", submissions);
+app.use("/learners", learners);
 
 // 404 Middleware
 app.use((req, res, next) => {
