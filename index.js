@@ -5,6 +5,9 @@ const port = 3000;
 
 const error = require("./utils/error");
 
+// Import custom routes
+const courses = require("./routes/courses");
+
 // Parsing Body Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
@@ -20,6 +23,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use("/courses", courses);
 
 // 404 Middleware
 app.use((req, res, next) => {
