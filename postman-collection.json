@@ -1,0 +1,225 @@
+{
+    "info": {
+        "name": "SBA 318: API Testing Collection",
+        "description": "SBA 318: A collection to test API endpoints.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Get Assignments",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/assignments",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "assignments"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Response is an array\", function () {",
+                            "    pm.response.to.be.json;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    pm.expect(pm.response.json()).to.be.an('array');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Assignment",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/assignments",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "assignments"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"New Assignment\",\n    \"due_at\": \"2024-02-15\",\n    \"points_possible\": 75\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "pm.test(\"Response contains new assignment with generated id\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.be.an('array');",
+                            "    pm.expect(jsonData.length).to.be.greaterThan(0);",
+                            "    var newAssignment = jsonData.find(a => a.name === \"New Assignment\");",
+                            "    pm.expect(newAssignment).to.not.be.undefined;",
+                            "    pm.expect(newAssignment).to.have.property('id');",
+                            "    pm.expect(newAssignment.name).to.eql(\"New Assignment\");",
+                            "    pm.expect(newAssignment.due_at).to.eql(\"2024-02-15\");",
+                            "    pm.expect(newAssignment.points_possible).to.eql(75);",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Get Courses",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/courses",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "courses"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Response is an array of courses\", function () {",
+                            "    pm.response.to.be.json;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    pm.expect(pm.response.json()).to.be.an('array');",
+                            "    var courses = pm.response.json();",
+                            "    courses.forEach(course => {",
+                            "        pm.expect(course).to.have.property('id');",
+                            "        pm.expect(course).to.have.property('name');",
+                            "    });",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Get Learners",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/learners",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "learners"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Response is an array of learners\", function () {",
+                            "    pm.response.to.be.json;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    pm.expect(pm.response.json()).to.be.an('array');",
+                            "    var learners = pm.response.json();",
+                            "    learners.forEach(learner => {",
+                            "        pm.expect(learner).to.have.property('id');",
+                            "        pm.expect(learner).to.have.property('name');",
+                            "        pm.expect(learner.name).to.have.property('first_name');",
+                            "        pm.expect(learner.name).to.have.property('last_name');",
+                            "        pm.expect(learner).to.have.property('email');",
+                            "    });",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Get Submissions",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/submissions",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "submissions"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Response is an array of submissions\", function () {",
+                            "    pm.response.to.be.json;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    pm.expect(pm.response.json()).to.be.an('array');",
+                            "    var submissions = pm.response.json();",
+                            "    submissions.forEach(submission => {",
+                            "        pm.expect(submission).to.have.property('learner_id');",
+                            "        pm.expect(submission).to.have.property('assignment_id');",
+                            "        pm.expect(submission).to.have.property('submission');",
+                            "        pm.expect(submission.submission).to.have.property('submitted_at');",
+                            "        pm.expect(submission.submission).to.have.property('score');",
+                            "    });",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
