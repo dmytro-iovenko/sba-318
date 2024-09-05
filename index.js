@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
+const error = require("./utils/error")
+
 // Parsing Body Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
@@ -18,6 +20,12 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+// 404 Middleware
+app.use((req, res, next) => {
+  throw error(404, "Resource Not Found");
+});
+
 
 // Error-handling Middleware
 // Any call to next() that includes an Error() will skip regular middleware
