@@ -18,7 +18,8 @@ const validateNewSubmission = (req, res, next) => {
   // Check Invalid Assignment ID
   if (!assignments.find((a) => a.id == req.body.assignment_id)) throw error(400, "Invalid Assignment ID");
   // Check Invalid Submitted Date Format
-  if (!Date.parse(submitted_at)) throw error(400, "Invalid Submitted Date Format");
+  if (!(Date.parse(submitted_at) && submitted_at === new Date(submitted_at).toISOString().split("T")[0]))
+    throw error(400, "Invalid Submitted Date Format");
   // Check Invalid Submission Score Number
   if (!(Number(score) >= 0)) throw error(400, "Invalid Submission Score Number");
   next();
