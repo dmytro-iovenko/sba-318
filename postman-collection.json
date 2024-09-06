@@ -86,6 +86,8 @@
                             "    pm.expect(newAssignment.name).to.eql(\"New Assignment\");",
                             "    pm.expect(newAssignment.due_at).to.eql(\"2024-02-15\");",
                             "    pm.expect(newAssignment.points_possible).to.eql(75);",
+                            "    // Store the new assignment's ID in an environment variable",
+                            "    pm.environment.set('assignmentId', newAssignment.id);",
                             "});"
                         ]
                     }
@@ -359,6 +361,8 @@
                             "    pm.expect(newLearner.name.first_name).to.eql(\"John\");",
                             "    pm.expect(newLearner.name.last_name).to.eql(\"Doe\");",
                             "    pm.expect(newLearner.email).to.eql(\"john.doe@example.com\");",
+                            "    // Store the new learner's ID in an environment variable",
+                            "    pm.environment.set('learnerId', newLearner.id);",
                             "});"
                         ]
                     }
@@ -496,6 +500,205 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "Create Submission",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/submissions",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "submissions"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"learner_id\": {{learnerId}},\n    \"assignment_id\": {{assignmentId}},\n    \"submission\": {\n        \"submitted_at\": \"2024-02-14T10:00:00Z\",\n        \"score\": 85\n    }\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "pm.test(\"Response contains new submission\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.be.an('array');",
+                            "    pm.expect(jsonData.length).to.be.greaterThan(0);",
+                            "    var newSubmission = jsonData.find(s => s.learner_id === pm.environment.get('learnerId') && s.assignment_id === pm.environment.get('assignmentId'));",
+                            "    pm.expect(newSubmission).to.not.be.undefined;",
+                            "    pm.expect(newSubmission).to.have.property('learner_id', pm.environment.get('learnerId'));",
+                            "    pm.expect(newSubmission).to.have.property('assignment_id', pm.environment.get('assignmentId'));",
+                            "    pm.expect(newSubmission.submission).to.have.property('submitted_at', '2024-02-14T10:00:00Z');",
+                            "    pm.expect(newSubmission.submission).to.have.property('score', 85);",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Submission (Negative Test - Missing Data)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/submissions",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "submissions"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"learner_id\": {{learnerId}},\n    \"assignment_id\": {{assignmentId}}\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Insufficient Data'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Insufficient Data');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Submission (Negative Test - Invalid Learner ID)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/submissions",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "submissions"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"learner_id\": {{invalidLearnerId}},\n    \"assignment_id\": {{assignmentId}},\n    \"submission\": {\n        \"submitted_at\": \"2024-03-01\",\n        \"score\": 80\n    }\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Invalid Learner ID'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Invalid Learner ID');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Submission (Negative Test - Invalid Assignment ID)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/submissions",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "submissions"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"learner_id\": {{learnerId}},\n    \"assignment_id\": {{invalidAssignmentId}},\n    \"submission\": {\n        \"submitted_at\": \"2024-03-01\",\n        \"score\": 80\n    }\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Invalid Assignment ID'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Invalid Assignment ID');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Pre-request script to calculate invalid IDs",
+                    "let currentLearnerId = parseInt(pm.environment.get('learnerId'));",
+                    "let currentAssignmentId = parseInt(pm.environment.get('assignmentId'));",
+                    "",
+                    "pm.environment.set('invalidLearnerId', (currentLearnerId + 1).toString());",
+                    "pm.environment.set('invalidAssignmentId', (currentAssignmentId + 1).toString());"
+                ]
+            }
         }
     ]
 }
