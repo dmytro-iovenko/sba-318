@@ -315,6 +315,145 @@
             ]
         },
         {
+            "name": "Create Learner",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/learners",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "learners"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": {\n        \"first_name\": \"John\",\n        \"last_name\": \"Doe\"\n    },\n    \"email\": \"john.doe@example.com\"\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "pm.test(\"Response contains new learner\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.be.an('array');",
+                            "    pm.expect(jsonData.length).to.be.greaterThan(0);",
+                            "    var newLearner = jsonData.find(l => l.email === \"john.doe@example.com\");",
+                            "    pm.expect(newLearner).to.not.be.undefined;",
+                            "    pm.expect(newLearner).to.have.property('id');",
+                            "    pm.expect(newLearner.name.first_name).to.eql(\"John\");",
+                            "    pm.expect(newLearner.name.last_name).to.eql(\"Doe\");",
+                            "    pm.expect(newLearner.email).to.eql(\"john.doe@example.com\");",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Learner (Negative Test - Missing Data)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/learners",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "learners"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": {\n        \"first_name\": \"John\"\n    },\n    \"email\": \"john.doe@example.com\"\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Insufficient Data'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Insufficient Data');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Learner (Negative Test - Email Exists)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/learners",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "learners"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": {\n        \"first_name\": \"Jane\",\n        \"last_name\": \"Doe\"\n    },\n    \"email\": \"john.doe@example.com\"\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 409\", function () {",
+                            "    pm.response.to.have.status(409);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Email Already Registered'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Email Already Registered');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
             "name": "Get Submissions",
             "request": {
                 "method": "GET",
