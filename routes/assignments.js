@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const assignments = require("../data/assignments");
+const error = require("../utils/error");
 
 router
   .route("/")
@@ -20,7 +21,7 @@ router
       };
       assignments.push(assignment);
       res.status(201).json(assignments);
-    } else throw error(error(400, "Insufficient Data"));
+    } else throw error(400, "Insufficient Data");
   });
 
 module.exports = router;

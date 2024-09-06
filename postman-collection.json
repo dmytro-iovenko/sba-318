@@ -93,6 +93,50 @@
             ]
         },
         {
+            "name": "Create Assignment (Negative Test)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/assignments",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "assignments"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Incomplete Assignment\"\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Insufficient Data'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Insufficient Data');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
             "name": "Get Courses",
             "request": {
                 "method": "GET",
