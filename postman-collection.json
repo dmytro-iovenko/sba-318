@@ -361,7 +361,7 @@
             ]
         },
         {
-            "name": "Create Course (Negative Test)",
+            "name": "Create Course (Negative Test - Missing Data)",
             "request": {
                 "method": "POST",
                 "header": [
@@ -398,6 +398,50 @@
                             "pm.test(\"Error message is 'Insufficient Data'\", function () {",
                             "    var responseJson = pm.response.json();",
                             "    pm.expect(responseJson).to.have.property('error', 'Insufficient Data');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Course (Negative Test - Invalid Name)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/courses",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "courses"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \" \"\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Invalid Name'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Invalid Name');",
                             "});"
                         ]
                     }
