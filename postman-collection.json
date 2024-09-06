@@ -522,7 +522,7 @@
                 },
                 "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"learner_id\": {{learnerId}},\n    \"assignment_id\": {{assignmentId}},\n    \"submission\": {\n        \"submitted_at\": \"2024-02-14T10:00:00Z\",\n        \"score\": 85\n    }\n}"
+                    "raw": "{\n    \"learner_id\": {{learnerId}},\n    \"assignment_id\": {{assignmentId}},\n    \"submission\": {\n        \"submitted_at\": \"2024-02-14\",\n        \"score\": 85\n    }\n}"
                 }
             },
             "response": [],
@@ -544,7 +544,7 @@
                             "    pm.expect(newSubmission).to.not.be.undefined;",
                             "    pm.expect(newSubmission).to.have.property('learner_id', pm.environment.get('learnerId'));",
                             "    pm.expect(newSubmission).to.have.property('assignment_id', pm.environment.get('assignmentId'));",
-                            "    pm.expect(newSubmission.submission).to.have.property('submitted_at', '2024-02-14T10:00:00Z');",
+                            "    pm.expect(newSubmission.submission).to.have.property('submitted_at', '2024-02-14');",
                             "    pm.expect(newSubmission.submission).to.have.property('score', 85);",
                             "});"
                         ]
@@ -678,6 +678,94 @@
                             "pm.test(\"Error message is 'Invalid Assignment ID'\", function () {",
                             "    var responseJson = pm.response.json();",
                             "    pm.expect(responseJson).to.have.property('error', 'Invalid Assignment ID');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Submission (Negative Test - Invalid Date)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/submissions",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "submissions"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"learner_id\": {{learnerId}},\n    \"assignment_id\": {{assignmentId}},\n    \"submission\": {\n        \"submitted_at\": \"InvalidDate\",\n        \"score\": 85\n    }\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Invalid Submitted Date Format'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Invalid Submitted Date Format');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Create Submission (Negative Test - Invalid Score)",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/submissions",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "submissions"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"learner_id\": {{learnerId}},\n    \"assignment_id\": {{assignmentId}},\n    \"submission\": {\n        \"submitted_at\": \"2024-03-01\",\n        \"score\": \"InvalidScore\"\n    }\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Invalid Submission Score Number'\", function () {",
+                            "    var responseJson = pm.response.json();",
+                            "    pm.expect(responseJson).to.have.property('error', 'Invalid Submission Score Number');",
                             "});"
                         ]
                     }
