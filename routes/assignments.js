@@ -37,4 +37,13 @@ router
     res.status(201).json(assignments);
   });
 
+router
+  .route("/:id")
+  // Get an assigment by id
+  .get((req, res, next) => {
+    const assigment = assignments.find((a) => a.id == req.params.id);
+    if (assigment) res.json(assigment);
+    else next();
+  });
+
 module.exports = router;
