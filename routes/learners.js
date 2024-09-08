@@ -30,4 +30,13 @@ router
     } else throw error(400, "Insufficient Data");
   });
 
+router
+  .route("/:id")
+  // Get a learner by id
+  .get((req, res, next) => {
+    const learner = learners.find((c) => c.id == req.params.id);
+    if (learner) res.json(learner);
+    else next();
+  });
+
 module.exports = router;

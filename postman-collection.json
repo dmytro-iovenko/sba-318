@@ -799,6 +799,89 @@
             ]
         },
         {
+            "name": "Get Learner by ID",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/learners/{{learnerId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "learners",
+                        "{{learnerId}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Response contains learner details\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.be.an('object');",
+                            "    pm.expect(jsonData).to.have.property('id');",
+                            "    pm.expect(jsonData).to.have.property('name').that.is.an('object');",
+                            "    pm.expect(jsonData.name).to.have.property('first_name');",
+                            "    pm.expect(jsonData.name).to.have.property('last_name');",
+                            "    pm.expect(jsonData).to.have.property('email');",
+                            "    pm.expect(jsonData.id).to.eql(parseInt(pm.environment.get('learnerId')));",
+                            "    pm.expect(jsonData.name.first_name).to.eql(\"John\");",
+                            "    pm.expect(jsonData.name.last_name).to.eql(\"Doe\");",
+                            "    pm.expect(jsonData.email).to.eql(\"john.doe@example.com\");",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Get Learner by ID (Negative Test - Invalid ID)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/learners/{{invalidLearnerId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "learners",
+                        "{{invalidLearnerId}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 404\", function () {",
+                            "    pm.response.to.have.status(404);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Resource Not Found'\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.be.an('object');",
+                            "    pm.expect(jsonData).to.have.property('error');",
+                            "    pm.expect(jsonData.error).to.eql(\"Resource Not Found\");",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
             "name": "Get Submissions",
             "request": {
                 "method": "GET",
