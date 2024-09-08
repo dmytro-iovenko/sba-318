@@ -439,6 +439,8 @@
                             "    pm.expect(newCourse).to.not.be.undefined;",
                             "    pm.expect(newCourse).to.have.property('id');",
                             "    pm.expect(newCourse.name).to.eql(\"New Course\");",
+                            "    // Store the new course's ID in an environment variable",
+                            "    pm.environment.set('courseId', newCourse.id);",
                             "});"
                         ]
                     }
@@ -527,6 +529,84 @@
                             "pm.test(\"Error message is 'Invalid Name'\", function () {",
                             "    var responseJson = pm.response.json();",
                             "    pm.expect(responseJson).to.have.property('error', 'Invalid Name');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Get Course by ID",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/courses/{{courseId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "courses",
+                        "{{courseId}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Response contains course details\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.be.an('object');",
+                            "    pm.expect(jsonData).to.have.property('id');",
+                            "    pm.expect(jsonData).to.have.property('name');",
+                            "    pm.expect(jsonData.id).to.eql(parseInt(pm.environment.get('courseId')));",
+                            "    pm.expect(jsonData.name).to.eql(\"New Course\");",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Get Course by ID (Negative Test - Invalid ID)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}/courses/{{invalidCourseId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "courses",
+                        "{{invalidCourseId}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 404\", function () {",
+                            "    pm.response.to.have.status(404);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Resource Not Found'\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.be.an('object');",
+                            "    pm.expect(jsonData).to.have.property('error');",
+                            "    pm.expect(jsonData.error).to.eql(\"Resource Not Found\");",
                             "});"
                         ]
                     }
@@ -1043,9 +1123,11 @@
                     "// Pre-request script to calculate invalid IDs",
                     "let currentLearnerId = parseInt(pm.environment.get('learnerId'));",
                     "let currentAssignmentId = parseInt(pm.environment.get('assignmentId'));",
+                    "let currentCourseId = parseInt(pm.environment.get('courseId'));",
                     "",
                     "pm.environment.set('invalidLearnerId', (currentLearnerId + 1).toString());",
-                    "pm.environment.set('invalidAssignmentId', (currentAssignmentId + 1).toString());"
+                    "pm.environment.set('invalidAssignmentId', (currentAssignmentId + 1).toString());",
+                    "pm.environment.set('invalidCourseId', (currentCourseId + 1).toString());"
                 ]
             }
         }

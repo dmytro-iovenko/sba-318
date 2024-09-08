@@ -31,4 +31,13 @@ router
     res.status(201).json(courses);
   });
 
+router
+  .route("/:id")
+  // Get a course by id
+  .get((req, res, next) => {
+    const course = courses.find((c) => c.id == req.params.id);
+    if (course) res.json(course);
+    else next();
+  });
+
 module.exports = router;
