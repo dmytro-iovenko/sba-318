@@ -28,10 +28,10 @@ app.use((req, res, next) => {
 });
 
 // Routing Middlewares
-app.use("/courses", courses);
-app.use("/assignments", assignments);
-app.use("/submissions", submissions);
-app.use("/learners", learners);
+app.use("/api/courses", courses);
+app.use("/api/assignments", assignments);
+app.use("/api/submissions", submissions);
+app.use("/api/learners", learners);
 
 // 404 Middleware
 app.use((req, res, next) => {
