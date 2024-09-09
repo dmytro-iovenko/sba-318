@@ -2,16 +2,16 @@
   <div class="container">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="/courses">Courses</a>
+        <a class="nav-link <%= menuItem == 'courses' ? 'active' : '' %>" href="/courses">Courses</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/assignments">Assignments</a>
+        <a class="nav-link <%= menuItem == 'assignments' ? 'active' : '' %>" href="/assignments">Assignments</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/submissions">Submissions</a>
+        <a class="nav-link <%= menuItem == 'submissions' ? 'active' : '' %>" href="/submissions">Submissions</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/learners">Learners</a>
+        <a class="nav-link <%= menuItem == 'learners' ? 'active' : '' %>" href="/learners">Learners</a>
       </li>
     </ul>
   </div>

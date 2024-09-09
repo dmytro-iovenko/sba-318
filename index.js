@@ -1,7 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const axios = require("axios");
+
 const app = express();
 const port = 3000;
+const API_URL = "http://localhost:3000/api";
+const DEBUG = false;
 
 const error = require("./utils/error");
 
@@ -43,39 +47,47 @@ app.use("/api", api);
 app.set("view engine", "ejs");
 
 // Courses page
-app.get("/courses", function (req, res) {
-  const options = {
-    title: "Courses",
-    courses,
-  };
-  res.render("courses", options);
+app.get("/courses", async function (req, res, next) {
+  try {
+    const response = await axios.get(`${API_URL}/courses`);
+    DEBUG && console.debug(response);
+    res.render("courses", { title: "Courses", courses: response.data, menuItem: "courses" });
+  } catch (err) {
+    next(error(500, "Error fetching courses"));
+  }
 });
 
 // Assignments page
-app.get("/assignments", function (req, res) {
-  const options = {
-    title: "Assignments",
-    assignments,
-  };
-  res.render("assignments", options);
+app.get("/assignments", async function (req, res, next) {
+  try {
+    const response = await axios.get(`${API_URL}/assignments`);
+    DEBUG && console.debug(response);
+    res.render("assignments", { title: "Assignments", assignments: response.data, menuItem: "assignments" });
+  } catch (err) {
+    next(error(500, "Error fetching assignments"));
+  }
 });
 
 // Learners page
-app.get("/learners", function (req, res) {
-  const options = {
-    title: "Learners",
-    learners,
-  };
-  res.render("learners", options);
+app.get("/learners", async function (req, res, next) {
+  try {
+    const response = await axios.get(`${API_URL}/learners`);
+    DEBUG && console.debug(response);
+    res.render("learners", { title: "Learners", learners: response.data, menuItem: "learners" });
+  } catch (err) {
+    next(error(500, "Error fetching learners"));
+  }
 });
 
 // Submissions page
-app.get("/submissions", function (req, res) {
-  const options = {
-    title: "Submissions",
-    submissions,
-  };
-  res.render("submissions", options);
+app.get("/submissions", async function (req, res, next) {
+  try {
+    const response = await axios.get(`${API_URL}/submissions`);
+    DEBUG && console.debug(response);
+    res.render("submissions", { title: "Submissions", submissions: response.data, menuItem: "submissions" });
+  } catch (err) {
+    next(error(500, "Error fetching submissions"));
+  }
 });
 
 // 404 Middleware
