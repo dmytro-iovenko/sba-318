@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/header'); %>
+
+  <body>
+    <%- include('./partials/navbar'); %>
+    <div class="container">
+      <h3 class="my-5 mb-3">Courses List</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Course Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% courses.forEach(function(course) { %>
+          <tr>
+            <td><%= course.name %></td>
+            <td>
+              <button class="btn btn-sm btn-danger mx-1" onclick="">Delete</button>
+              <button class="btn btn-sm btn-secondary mx-1" href="<%= course.id %>/edit">Edit</button>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

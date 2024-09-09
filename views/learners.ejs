@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/header'); %>
+
+  <body>
+    <%- include('./partials/navbar'); %>
+    <div class="container">
+      <h3 class="my-5 mb-3">Learners List</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% learners.forEach(function(learner) { %>
+          <tr>
+            <td><%= learner.name.last_name %>, <%= learner.name.first_name %></td>
+            <td><%= learner.email %></td>
+            <td>
+              <button class="btn btn-sm btn-danger mx-1" onclick="">Delete</button>
+              <button class="btn btn-sm btn-secondary mx-1" href="<%= learner.id %>/edit">Edit</button>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

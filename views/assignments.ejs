@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <%- include('./partials/header'); %>
+
+  <body>
+    <%- include('./partials/navbar'); %>
+    <div class="container">
+      <h3 class="my-5 mb-3">Assignments List</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Due Date</th>
+            <th>Points Possible</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% assignments.forEach(function(assignment) { %>
+          <tr>
+            <td><%= assignment.name %></td>
+            <td><%= assignment.due_at %></td>
+            <td><%= assignment.points_possible %></td>
+            <td>
+              <button class="btn btn-sm btn-danger mx-1" onclick="">Delete</button>
+              <button class="btn btn-sm btn-secondary mx-1" href="<%= assignment.id %>/edit">Edit</button>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

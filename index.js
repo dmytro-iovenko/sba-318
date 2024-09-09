@@ -6,10 +6,13 @@ const port = 3000;
 const error = require("./utils/error");
 
 // Import custom routes
-const courses = require("./routes/courses");
-const assignments = require("./routes/assignments");
-const submissions = require("./routes/submissions");
-const learners = require("./routes/learners");
+const api = require("./api");
+
+// Get data
+const courses = require("./data/courses");
+const assignments = require("./data/assignments");
+const learners = require("./data/learners");
+const submissions = require("./data/submissions");
 
 // Parsing Body Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,11 +30,53 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routing Middlewares
-app.use("/api/courses", courses);
-app.use("/api/assignments", assignments);
-app.use("/api/submissions", submissions);
-app.use("/api/learners", learners);
+// // Routing Middlewares
+// app.use("/api/courses", courses);
+// app.use("/api/assignments", assignments);
+// app.use("/api/submissions", submissions);
+// app.use("/api/learners", learners);
+
+// Use all API routes with the /api prefix
+app.use("/api", api);
+
+// Set the view engine to ejs
+app.set("view engine", "ejs");
+
+// Courses page
+app.get("/courses", function (req, res) {
+  const options = {
+    title: "Courses",
+    courses,
+  };
+  res.render("courses", options);
+});
+
+// Assignments page
+app.get("/assignments", function (req, res) {
+  const options = {
+    title: "Assignments",
+    assignments,
+  };
+  res.render("assignments", options);
+});
+
+// Learners page
+app.get("/learners", function (req, res) {
+  const options = {
+    title: "Learners",
+    learners,
+  };
+  res.render("learners", options);
+});
+
+// Submissions page
+app.get("/submissions", function (req, res) {
+  const options = {
+    title: "Submissions",
+    submissions,
+  };
+  res.render("submissions", options);
+});
 
 // 404 Middleware
 app.use((req, res, next) => {
