@@ -46,4 +46,13 @@ router
     res.status(201).json(submissions);
   });
 
+router
+  .route("/:id")
+  // Get a submission with the specified id
+  .get((req, res, next) => {
+    const submission = submissions.find((s) => s.id == req.params.id);
+    if (submission) res.json(submission);
+    else next();
+  });
+
 module.exports = router;
