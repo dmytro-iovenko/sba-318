@@ -12,12 +12,6 @@ const error = require("./utils/error");
 // Import custom routes
 const api = require("./api");
 
-// Get data
-const courses = require("./data/courses");
-const assignments = require("./data/assignments");
-const learners = require("./data/learners");
-const submissions = require("./data/submissions");
-
 // Parsing Body Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
@@ -33,12 +27,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
-// // Routing Middlewares
-// app.use("/api/courses", courses);
-// app.use("/api/assignments", assignments);
-// app.use("/api/submissions", submissions);
-// app.use("/api/learners", learners);
 
 // Use all API routes with the /api prefix
 app.use("/api", api);
