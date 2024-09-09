@@ -271,7 +271,7 @@
             ]
         },
         {
-            "name": "Get Assignment by ID",
+            "name": "Get Assignment",
             "request": {
                 "method": "GET",
                 "header": [],
@@ -318,7 +318,7 @@
             ]
         },
         {
-            "name": "Get Assignment by ID (Negative Test - Invalid ID)",
+            "name": "Get Assignment (Negative Test - Invalid ID)",
             "request": {
                 "method": "GET",
                 "header": [],
@@ -448,7 +448,6 @@
                 }
             ]
         },
-        
         {
             "name": "Delete Assignment (Negative Test - Invalid ID)",
             "request": {
@@ -817,6 +816,47 @@
                 "body": {
                     "mode": "raw",
                     "raw": "{\n    \"name\": \"Updated Course\"\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 404\", function () {",
+                            "    pm.response.to.have.status(404);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Resource Not Found'\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('error', 'Resource Not Found');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Delete Course (Negative Test - Invalid ID)",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/courses/{{invalidCourseId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "courses",
+                        "{{invalidCourseId}}"
+                    ]
                 }
             },
             "response": [],
@@ -1734,6 +1774,47 @@
                             "    pm.expect(jsonData).to.have.property('name');",
                             "    pm.expect(jsonData).to.have.property('due_at');",
                             "    pm.expect(jsonData).to.have.property('points_possible');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Delete Course",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/courses/{{courseId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "courses",
+                        "{{courseId}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "pm.test(\"Response contains deleted course details\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('id', pm.environment.get('courseId'));",
+                            "    pm.expect(jsonData).to.have.property('name');",
                             "});"
                         ]
                     }

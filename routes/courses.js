@@ -33,19 +33,30 @@ router
 
 router
   .route("/:id")
-  // Get a course by id
+  // Get a course with the specified id
   .get((req, res, next) => {
     const course = courses.find((c) => c.id == req.params.id);
     if (course) res.json(course);
     else next();
   })
-  // Update an course with the specified id
+  // Update a course with the specified id
   .patch((req, res, next) => {
-    const course = courses.find((a, i) => {
-      if (a.id == req.params.id) {
+    const course = courses.find((c, i) => {
+      if (c.id == req.params.id) {
         for (const key in req.body) {
           courses[i][key] = req.body[key];
         }
+        return true;
+      }
+    });
+    if (course) res.json(course);
+    else next();
+  })
+  // Delete a course with the specified id
+  .delete((req, res, next) => {
+    const course = courses.find((c, i) => {
+      if (c.id == req.params.id) {
+        courses.splice(i, 1);
         return true;
       }
     });
