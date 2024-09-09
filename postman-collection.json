@@ -1247,6 +1247,8 @@
                             "    pm.expect(newSubmission).to.have.property('assignment_id', pm.environment.get('assignmentId'));",
                             "    pm.expect(newSubmission.submission).to.have.property('submitted_at', '2024-02-14');",
                             "    pm.expect(newSubmission.submission).to.have.property('score', 85);",
+                            "    // Store the new submission's ID in an environment variable",
+                            "    pm.environment.set('submissionId', newSubmission.id);",
                             "});"
                         ]
                     }
@@ -1484,10 +1486,12 @@
                     "let currentLearnerId = parseInt(pm.environment.get('learnerId'));",
                     "let currentAssignmentId = parseInt(pm.environment.get('assignmentId'));",
                     "let currentCourseId = parseInt(pm.environment.get('courseId'));",
+                    "let currentSubmissionId = parseInt(pm.environment.get('submissionId'));",
                     "",
                     "pm.environment.set('invalidLearnerId', (currentLearnerId + 1).toString());",
                     "pm.environment.set('invalidAssignmentId', (currentAssignmentId + 1).toString());",
-                    "pm.environment.set('invalidCourseId', (currentCourseId + 1).toString());"
+                    "pm.environment.set('invalidCourseId', (currentCourseId + 1).toString());",
+                    "pm.environment.set('invalidSubmissionId', (currentSubmissionId + 1).toString());"
                 ]
             }
         }

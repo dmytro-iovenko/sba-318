@@ -1,5 +1,6 @@
 const submissions = [
   {
+    id: 1,
     learner_id: 1,
     assignment_id: 1,
     submission: {
@@ -8,6 +9,7 @@ const submissions = [
     },
   },
   {
+    id: 2,
     learner_id: 1,
     assignment_id: 2,
     submission: {
@@ -16,6 +18,7 @@ const submissions = [
     },
   },
   {
+    id: 3,
     learner_id: 1,
     assignment_id: 3,
     submission: {
@@ -24,6 +27,7 @@ const submissions = [
     },
   },
   {
+    id: 4,
     learner_id: 2,
     assignment_id: 1,
     submission: {
@@ -32,6 +36,7 @@ const submissions = [
     },
   },
   {
+    id: 5,
     learner_id: 2,
     assignment_id: 2,
     submission: {

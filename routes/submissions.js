@@ -34,6 +34,7 @@ router
   // Create a new submission
   .post(validateNewSubmission, (req, res, next) => {
     const submission = {
+      id: submissions.length ? submissions[submissions.length - 1].id + 1 : 1,
       learner_id: req.body.learner_id,
       assignment_id: req.body.assignment_id,
       submission: {
