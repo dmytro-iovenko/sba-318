@@ -53,6 +53,19 @@ router
     const submission = submissions.find((s) => s.id == req.params.id);
     if (submission) res.json(submission);
     else next();
+  })
+  // Update a submission with the specified id
+  .patch((req, res, next) => {
+    const submission = submissions.find((s, i) => {
+      if (s.id == req.params.id) {
+        for (const key in req.body) {
+          submissions[i][key] = req.body[key];
+        }
+        return true;
+      }
+    });
+    if (submission) res.json(submission);
+    else next();
   });
 
 module.exports = router;
