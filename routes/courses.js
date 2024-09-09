@@ -16,7 +16,16 @@ router.get("/", async function (req, res, next) {
   try {
     const response = await axios.get(`${API_URL}/courses`);
     DEBUG && console.debug(response);
-    res.render("courses", { title: "Courses", courses: response.data, menuItem: "courses" });
+    res.render("courses", { title: "Courses List", courses: response.data, menuItem: "courses" });
+  } catch (err) {
+    next(error(500, "Error fetching courses"));
+  }
+});
+
+// Render New Course form
+router.get("/new", async function (req, res, next) {
+  try {
+    res.render("courses/new", { title: "Create a new course", menuItem: "courses" });
   } catch (err) {
     next(error(500, "Error fetching courses"));
   }

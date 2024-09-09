@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <%- include('../partials/header'); %>
+
+  <body>
+    <%- include('../partials/navbar'); %>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center my-5 mb-3">
+        <h3 class="mb-0"><%= title %></h3>
+        <%- include('../partials/submissions/top'); %>
+      </div>
+
+      <form id="courseForm" onsubmit="onSubmit()">
+        <div class="row mb-3">
+          <div class="col">
+            <label class="form-label">Learner ID:</label>
+            <input class="form-control" type="number" min="0" required />
+          </div>
+          <div class="col">
+            <label class="form-label">Assignment ID:</label>
+            <input class="form-control" type="number" min="0" required />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label class="form-label">Submission Date:</label>
+            <input class="form-control" type="date" required />
+          </div>
+          <div class="col">
+            <label class="form-label">Submission Score:</label>
+            <input class="form-control" type="number" min="0" required />
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
+<!-- 
+"learner_id": 1,
+"assignment_id": 1,
+"submission": {
+    "submitted_at": "2023-01-25",
+    "score": 47
+} -->

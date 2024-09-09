@@ -11,14 +11,23 @@ const { API_URL, DEBUG } = require("../utils/config");
 // Import helper function for handling errors
 const error = require("../utils/error");
 
-// Render all courses
+// Render all assignments
 router.get("/", async function (req, res, next) {
   try {
     const response = await axios.get(`${API_URL}/assignments`);
     DEBUG && console.debug(response);
-    res.render("assignments", { title: "Assignments", assignments: response.data, menuItem: "assignments" });
+    res.render("assignments", { title: "Assignments List", assignments: response.data, menuItem: "assignments" });
   } catch (err) {
     next(error(500, "Error fetching assignments"));
+  }
+});
+
+// Render New Assignment form
+router.get("/new", async function (req, res, next) {
+  try {
+    res.render("assignments/new", { title: "Create a new assignment", menuItem: "assignments" });
+  } catch (err) {
+    next(error(500, "Error fetching courses"));
   }
 });
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <%- include('../partials/header'); %>
+
+  <body>
+    <%- include('../partials/navbar'); %>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center my-5 mb-3">
+        <h3 class="mb-0"><%= title %></h3>
+        <%- include('../partials/assignments/top'); %>
+      </div>
+
+      <form id="courseForm" onsubmit="onSubmit()">
+        <div class="row mb-3">
+          <div class="col">
+            <label class="form-label">Assignment Name:</label>
+            <input class="form-control" type="text" required />
+          </div>
+          <div class="col">
+            <label class="form-label">Due Date:</label>
+            <input class="form-control" type="date" required />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label class="form-label">Points Possible Name:</label>
+            <input class="form-control" type="number" required />
+          </div>
+          <div class="col"></div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
