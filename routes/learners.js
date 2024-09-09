@@ -32,9 +32,22 @@ router
 
 router
   .route("/:id")
-  // Get a learner by id
+  // Get a learner with the specified id
   .get((req, res, next) => {
-    const learner = learners.find((c) => c.id == req.params.id);
+    const learner = learners.find((l) => l.id == req.params.id);
+    if (learner) res.json(learner);
+    else next();
+  })
+  // Update a learner with the specified id
+  .patch((req, res, next) => {
+    const learner = learners.find((l, i) => {
+      if (l.id == req.params.id) {
+        for (const key in req.body) {
+          learners[i][key] = req.body[key];
+        }
+        return true;
+      }
+    });
     if (learner) res.json(learner);
     else next();
   });
