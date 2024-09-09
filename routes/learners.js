@@ -50,6 +50,17 @@ router
     });
     if (learner) res.json(learner);
     else next();
+  })
+  // Delete a learner with the specified id
+  .delete((req, res, next) => {
+    const learner = learners.find((l, i) => {
+      if (l.id == req.params.id) {
+        learners.splice(i, 1);
+        return true;
+      }
+    });
+    if (learner) res.json(learner);
+    else next();
   });
 
 module.exports = router;

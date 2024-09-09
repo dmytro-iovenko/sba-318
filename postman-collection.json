@@ -1065,7 +1065,7 @@
             ]
         },
         {
-            "name": "Get Learner by ID",
+            "name": "Get Learner",
             "request": {
                 "method": "GET",
                 "header": [],
@@ -1110,7 +1110,7 @@
             ]
         },
         {
-            "name": "Get Learner by ID (Negative Test - Invalid ID)",
+            "name": "Get Learner (Negative Test - Invalid ID)",
             "request": {
                 "method": "GET",
                 "header": [],
@@ -1218,6 +1218,47 @@
                 "body": {
                     "mode": "raw",
                     "raw": "{\n    \"name\": {\n        \"first_name\": \"Jane\",\n        \"last_name\": \"Smith\"\n    },\n    \"email\": \"jane.smith@example.com\"\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 404\", function () {",
+                            "    pm.response.to.have.status(404);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Resource Not Found'\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('error', 'Resource Not Found');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Delete Learner (Negative Test - Invalid ID)",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/learners/{{invalidLearnerId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "learners",
+                        "{{invalidLearnerId}}"
+                    ]
                 }
             },
             "response": [],
@@ -1731,6 +1772,50 @@
                             "pm.test(\"Error message is 'Resource Not Found'\", function () {",
                             "    var jsonData = pm.response.json();",
                             "    pm.expect(jsonData).to.have.property('error', 'Resource Not Found');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Delete Learner",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/learners/{{learnerId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "learners",
+                        "{{learnerId}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "pm.test(\"Response contains deleted learner details\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('id', pm.environment.get('learnerId'));",
+                            "    pm.expect(jsonData).to.have.property('name');",
+                            "    pm.expect(jsonData.name).to.have.property('first_name');",
+                            "    pm.expect(jsonData.name).to.have.property('last_name');",
+                            "    pm.expect(jsonData).to.have.property('email');",
                             "});"
                         ]
                     }
