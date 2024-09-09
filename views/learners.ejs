@@ -5,7 +5,10 @@
   <body>
     <%- include('./partials/navbar'); %>
     <div class="container">
-      <h3 class="my-5 mb-3">Learners List</h3>
+      <div class="d-flex justify-content-between align-items-center my-5 mb-3">
+        <h3 class="mb-0">Learners List</h3>
+        <%- include('./partials/learners/top'); %>
+      </div>
       <table class="table">
         <thead>
           <tr>
