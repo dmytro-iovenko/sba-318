@@ -39,11 +39,25 @@ router
 
 router
   .route("/:id")
-  // Get an assigment by id
+  // Get an assigment with the specified id
   .get((req, res, next) => {
-    const assigment = assignments.find((a) => a.id == req.params.id);
-    if (assigment) res.json(assigment);
+    const assignment = assignments.find((a) => a.id == req.params.id);
+    if (assignment) res.json(assignment);
+    else next();
+  })
+  // Update an assigment with the specified id
+  .patch((req, res, next) => {
+    const assignment = assignments.find((a, i) => {
+      if (a.id == req.params.id) {
+        for (const key in req.body) {
+          assignments[i][key] = req.body[key];
+        }
+        return true;
+      }
+    });
+    if (assignment) res.json(assignment);
     else next();
   });
+;
 
 module.exports = router;

@@ -354,6 +354,99 @@
                     }
                 }
             ]
+        },
+        {
+            "name": "Update Assignment",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/assignments/{{assignmentId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "assignments",
+                        "{{assignmentId}}"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Updated Assignment\",\n    \"due_at\": \"2024-03-15\",\n    \"points_possible\": 85\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "pm.test(\"Response contains updated assignment\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('id', pm.environment.get('assignmentId'));",
+                            "    pm.expect(jsonData.name).to.eql(\"Updated Assignment\");",
+                            "    pm.expect(jsonData.due_at).to.eql(\"2024-03-15\");",
+                            "    pm.expect(jsonData.points_possible).to.eql(85);",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Update Assignment (Negative Test - Invalid ID)",
+            "request": {
+                "method": "PATCH",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/assignments/{{invalidAssignmentId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "assignments",
+                        "{{invalidAssignmentId}}"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"name\": \"Updated Assignment\",\n    \"due_at\": \"2024-03-15\",\n    \"points_possible\": 85\n}"
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 404\", function () {",
+                            "    pm.response.to.have.status(404);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Resource Not Found'\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('error', 'Resource Not Found');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
         },        
         {
             "name": "Get Courses",
