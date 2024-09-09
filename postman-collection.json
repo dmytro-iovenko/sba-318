@@ -447,7 +447,49 @@
                     }
                 }
             ]
-        },        
+        },
+        
+        {
+            "name": "Delete Assignment (Negative Test - Invalid ID)",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/assignments/{{invalidAssignmentId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "assignments",
+                        "{{invalidAssignmentId}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 404\", function () {",
+                            "    pm.response.to.have.status(404);",
+                            "});",
+                            "",
+                            "pm.test(\"Error message is 'Resource Not Found'\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('error', 'Resource Not Found');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
         {
             "name": "Get Courses",
             "request": {
@@ -1649,6 +1691,49 @@
                             "pm.test(\"Error message is 'Resource Not Found'\", function () {",
                             "    var jsonData = pm.response.json();",
                             "    pm.expect(jsonData).to.have.property('error', 'Resource Not Found');",
+                            "});"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Delete Assignment",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "{{baseUrl}}/assignments/{{assignmentId}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "assignments",
+                        "{{assignmentId}}"
+                    ]
+                }
+            },
+            "response": [],
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "pm.test(\"Response contains deleted assignment details\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData).to.have.property('id', pm.environment.get('assignmentId'));",
+                            "    pm.expect(jsonData).to.have.property('name');",
+                            "    pm.expect(jsonData).to.have.property('due_at');",
+                            "    pm.expect(jsonData).to.have.property('points_possible');",
                             "});"
                         ]
                     }

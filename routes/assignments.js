@@ -57,7 +57,16 @@ router
     });
     if (assignment) res.json(assignment);
     else next();
+  })
+  // Delete an assigment with the specified id
+  .delete((req, res, next) => {
+    const assignment = assignments.find((a, i) => {
+      if (a.id == req.params.id) {
+        assignments.splice(i, 1);
+        return true;
+      }
+    });
+    if (assignment) res.json(assignment);
+    else next();
   });
-;
-
 module.exports = router;
