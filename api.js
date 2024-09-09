@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 // Import custom routes
-const courses = require("./routes/courses");
-const assignments = require("./routes/assignments");
-const submissions = require("./routes/submissions");
-const learners = require("./routes/learners");
+const courses = require("./api/courses");
+const assignments = require("./api/assignments");
+const submissions = require("./api/submissions");
+const learners = require("./api/learners");
 
 // Routing Middlewares
 router.use("/courses", courses);
