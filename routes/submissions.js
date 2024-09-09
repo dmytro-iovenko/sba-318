@@ -66,6 +66,17 @@ router
     });
     if (submission) res.json(submission);
     else next();
+  })
+  // Delete a submission with the specified id
+  .delete((req, res, next) => {
+    const submission = submissions.find((s, i) => {
+      if (s.id == req.params.id) {
+        submissions.splice(i, 1);
+        return true;
+      }
+    });
+    if (submission) res.json(submission);
+    else next();
   });
-
+  
 module.exports = router;
