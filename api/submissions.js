@@ -86,7 +86,7 @@ router
 // Filtering Middleware
 router.use((req, res, next) => {
   // Get req.locals (recommended way of passing data through middleware)
-  let { submissions } = req.locals;
+  let { submissions } = req.locals || {};
   console.log(submissions);
   // Filter submissions with the specified learnerId
   req.query.learnerId && (submissions = submissions.filter((s) => s.learner_id == req.query.learnerId));
