@@ -18,6 +18,22 @@
             <th>Score</th>
             <th>Actions</th>
           </tr>
+          <tr>
+            <form id="filterForm">
+              <th>
+                <input type="number" class="form-control" id="filterLearnerId" name="learnerId" placeholder="Filter by Learner ID" value="<%= filter.learnerId %>"/>
+              </th>
+              <th>
+                <input type="number" class="form-control" id="filterAssignmentId" name="assignmentId" placeholder="Filter by Assignment ID" value="<%= filter.assignmentId %>" />
+              </th>
+              <th></th>
+              <th></th>
+              <th>
+                <button class="btn btn-sm btn-primary mx-1 w-50" type="submit">Apply</button>
+                <a class="btn btn-sm btn-light mx-1 w-50" type="reset" href="/submissions">Reset</a>
+              </th>
+            </form>
+          </tr>
         </thead>
         <tbody>
           <% submissions.forEach(function(submission) { %>
@@ -27,8 +43,8 @@
             <td><%= submission.submission.submitted_at %></td>
             <td><%= submission.submission.score %></td>
             <td>
-              <button class="btn btn-sm btn-danger mx-1" data-id="<%= submission.id %>" role="delete">Delete</button>
-              <a class="btn btn-sm btn-secondary mx-1" href="submissions/<%= submission.id %>" role="edit">Edit</a>
+              <button class="btn btn-sm btn-danger mx-1 w-50" data-id="<%= submission.id %>" role="delete">Delete</button>
+              <a class="btn btn-sm btn-secondary mx-1 w-50" href="submissions/<%= submission.id %>" role="edit">Edit</a>
             </td>
           </tr>
           <% }); %>

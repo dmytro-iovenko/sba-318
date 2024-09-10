@@ -6,6 +6,7 @@ const error = require("../utils/error");
 const submissions = require("../data/submissions");
 const learners = require("../data/learners");
 const assignments = require("../data/assignments");
+const { route } = require("./courses");
 
 // Validating New Submission Middleware
 const validateNewSubmission = (req, res, next) => {
@@ -29,7 +30,10 @@ router
   .route("/")
   // Get all submissions
   .get((req, res, next) => {
-    res.json(submissions);
+    // Passing data through filtering middleware
+    req.locals = { submissions };
+    next();
+    // res.json(submissions);
   })
   // Create a new submission
   .post(validateNewSubmission, (req, res, next) => {
@@ -78,5 +82,19 @@ router
     if (submission) res.json(submission);
     else next();
   });
-  
+
+// Filtering Middleware
+router.use((req, res, next) => {
+  // Get req.locals (recommended way of passing data through middleware)
+  let { submissions } = req.locals;
+  console.log(submissions);
+  // Filter submissions with the specified learnerId
+  req.query.learnerId && (submissions = submissions.filter((s) => s.learner_id == req.query.learnerId));
+  // Filter submissions with the specified assignmentId
+  req.query.assignmentId && (submissions = submissions.filter((s) => s.assignment_id == req.query.assignmentId));
+  // Send filtered data
+  if (submissions) res.json(submissions);
+  else next();
+});
+
 module.exports = router;
