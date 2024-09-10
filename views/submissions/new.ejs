@@ -10,28 +10,29 @@
         <%- include('../partials/submissions/top'); %>
       </div>
 
-      <form id="courseForm" onsubmit="onSubmit()">
+      <form id="submissionForm">
         <div class="row mb-3">
           <div class="col">
             <label class="form-label">Learner ID:</label>
-            <input class="form-control" type="number" min="0" required />
+            <input id="learnerId" class="form-control" type="number" min="0" required />
           </div>
           <div class="col">
             <label class="form-label">Assignment ID:</label>
-            <input class="form-control" type="number" min="0" required />
+            <input id="assignmentId" class="form-control" type="number" min="0" required />
           </div>
         </div>
         <div class="row mb-3">
           <div class="col">
             <label class="form-label">Submission Date:</label>
-            <input class="form-control" type="date" required />
+            <input id="submissionDate" class="form-control" type="date" required />
           </div>
           <div class="col">
             <label class="form-label">Submission Score:</label>
-            <input class="form-control" type="number" min="0" required />
+            <input id="submissionScore" class="form-control" type="number" min="0" required />
           </div>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
+        <%- include('./submitform'); %>
       </form>
     </div>
   </body>

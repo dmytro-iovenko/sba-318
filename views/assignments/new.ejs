@@ -10,25 +10,26 @@
         <%- include('../partials/assignments/top'); %>
       </div>
 
-      <form id="courseForm" onsubmit="onSubmit()">
+      <form id="assignmentForm">
         <div class="row mb-3">
           <div class="col">
             <label class="form-label">Assignment Name:</label>
-            <input class="form-control" type="text" required />
+            <input id="assignmentName" class="form-control" type="text" required />
           </div>
           <div class="col">
             <label class="form-label">Due Date:</label>
-            <input class="form-control" type="date" required />
+            <input id="assignmentDueDate" class="form-control" type="date" required />
           </div>
         </div>
         <div class="row mb-3">
           <div class="col">
-            <label class="form-label">Points Possible Name:</label>
-            <input class="form-control" type="number" required />
+            <label class="form-label">Points Possible:</label>
+            <input id="assignmentPointsPossible" class="form-control" type="number" required />
           </div>
           <div class="col"></div>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
+        <%- include('./submitform'); %>
       </form>
     </div>
   </body>

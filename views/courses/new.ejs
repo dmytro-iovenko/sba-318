@@ -10,16 +10,17 @@
         <%- include('../partials/courses/top'); %>
       </div>
 
-      <form id="courseForm" onsubmit="onSubmit()">
+      <form id="courseForm">
         <div class="row mb-3">
           <div class="col">
             <label class="form-label">Course Name:</label>
-            <input class="form-control" type="text" required />
+            <input id="courseName" class="form-control" type="text" required />
           </div>
           <div class="col"></div>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
-      </form>
+        <%- include('./submitform'); %>
+    </form>
     </div>
   </body>
 </html>

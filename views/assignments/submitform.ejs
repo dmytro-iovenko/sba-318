@@ -1,0 +1,44 @@
+<div id="message" class="alert mt-3"></div>
+<script>
+  document.getElementById("assignmentForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const assignmentNameInput = document.getElementById("assignmentName");
+    const assignmentName = assignmentNameInput.value;
+    const assignmentDueDateInput = document.getElementById("assignmentDueDate");
+    const assignmentDueDate = assignmentDueDateInput.value;
+    const assignmentPointsPossibleInput = document.getElementById("assignmentPointsPossible");
+    const assignmentPointsPossible = assignmentPointsPossibleInput.value;
+    const messageDiv = document.getElementById("message");
+
+    try {
+      const response = await axios.post("/api/assignments", {
+        name: assignmentName,
+        due_at: assignmentDueDate,
+        points_possible: assignmentPointsPossible,
+      });
+      console.log("Success:", response);
+
+      // Clear input field after successful submission
+      event.target.querySelectorAll("input").forEach((input) => (input.value = ""));
+      // Display success message
+      displayMessage(messageDiv, "Assignment submitted successfully!");
+    } catch (error) {
+      console.error("Error:", error);
+      // Display error message
+      displayMessage(messageDiv, `Error submitting assignment: ${error.response.data.error}`, true);
+    }
+
+    // Helper function to display message
+    function displayMessage(element, message, isError = false) {
+      element.textContent = message;
+      const oldClass = isError ? "alert-success" : "alert-danger";
+      const newClass = isError ? "alert-danger" : "alert-success";
+      if (element.classList.contains(oldClass)) {
+        element.classList.replace(oldClass, newClass);
+      } else {
+        element.classList.add(newClass);
+      }
+    }
+  });
+</script>
