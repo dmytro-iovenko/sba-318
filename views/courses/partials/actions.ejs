@@ -1,0 +1,18 @@
+<script>
+  document.querySelectorAll("button[role='delete']").forEach((button) =>
+    button.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const id = event.target.dataset.id;
+      if (id) {
+        try {
+          const response = await axios.delete(`/api/courses/${id}`);
+          console.log("Success:", response);
+          // do redirect to refresh the list
+          window.location.pathname=("/courses");
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    })
+  );
+</script>

@@ -7,7 +7,7 @@
     <div class="container">
       <div class="d-flex justify-content-between align-items-center my-5 mb-3">
         <h3 class="mb-0"><%= title %></h3>
-        <%- include('./partials/submissions/top'); %>
+        <%- include('./submissions/partials/top'); %>
       </div>
       <table class="table">
         <thead>
@@ -27,13 +27,14 @@
             <td><%= submission.submission.submitted_at %></td>
             <td><%= submission.submission.score %></td>
             <td>
-              <button class="btn btn-sm btn-danger mx-1" onclick="">Delete</button>
-              <button class="btn btn-sm btn-secondary mx-1" href="<%= submission.id %>/edit">Edit</button>
+              <button class="btn btn-sm btn-danger mx-1" data-id="<%= submission.id %>" role="delete">Delete</button>
+              <button class="btn btn-sm btn-secondary mx-1" href="<%= submission.id %>" role="edit">Edit</button>
             </td>
           </tr>
           <% }); %>
         </tbody>
       </table>
     </div>
+    <%- include('./submissions/partials/actions'); %>
   </body>
 </html>
