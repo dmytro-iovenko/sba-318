@@ -26,7 +26,7 @@
             <td><%= assignment.points_possible %></td>
             <td>
               <button class="btn btn-sm btn-danger mx-1" data-id="<%= assignment.id %>" role="delete">Delete</button>
-              <button class="btn btn-sm btn-secondary mx-1" href="<%= assignment.id %>" role="edit">Edit</button>
+              <a class="btn btn-sm btn-secondary mx-1" href="assignments/<%= assignment.id %>" role="edit">Edit</a>
             </td>
           </tr>
           <% }); %>

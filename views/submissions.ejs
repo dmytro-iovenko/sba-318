@@ -28,7 +28,7 @@
             <td><%= submission.submission.score %></td>
             <td>
               <button class="btn btn-sm btn-danger mx-1" data-id="<%= submission.id %>" role="delete">Delete</button>
-              <button class="btn btn-sm btn-secondary mx-1" href="<%= submission.id %>" role="edit">Edit</button>
+              <a class="btn btn-sm btn-secondary mx-1" href="submissions/<%= submission.id %>" role="edit">Edit</a>
             </td>
           </tr>
           <% }); %>

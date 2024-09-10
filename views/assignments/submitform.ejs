@@ -3,6 +3,9 @@
   document.getElementById("assignmentForm").addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    const assignmentIdInput = document.getElementById("assignmentId");
+    const assignmentId = assignmentIdInput && assignmentIdInput.value;
+
     const assignmentNameInput = document.getElementById("assignmentName");
     const assignmentName = assignmentNameInput.value;
     const assignmentDueDateInput = document.getElementById("assignmentDueDate");
@@ -12,11 +15,14 @@
     const messageDiv = document.getElementById("message");
 
     try {
-      const response = await axios.post("/api/assignments", {
+      const options = {
         name: assignmentName,
         due_at: assignmentDueDate,
         points_possible: assignmentPointsPossible,
-      });
+      };
+      const response = assignmentId
+        ? await axios.patch(`/api/assignments/${assignmentId}`, options)
+        : await axios.post("/api/assignments", options);
       console.log("Success:", response);
 
       // Clear input field after successful submission

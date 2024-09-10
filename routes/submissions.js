@@ -25,9 +25,21 @@ router.get("/", async function (req, res, next) {
 // Render New Submission form
 router.get("/new", async function (req, res, next) {
   try {
-    res.render("submissions/new", { title: "Create a new submission", menuItem: "learners" });
+    res.render("submissions/new", { title: "Create a new submission", menuItem: "submissions" });
   } catch (err) {
     next(error(500, "Error fetching courses"));
+  }
+});
+
+// Render Edit Submission form
+router.get("/:id", async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const response = await axios.get(`${API_URL}/submissions/${id}`);
+    DEBUG && console.debug(response);
+    res.render("submissions/edit", { title: "Edit Submission", submission: response.data, menuItem: "submissions" });
+  } catch (err) {
+    next(error(500, 'Error fetching submission (id:${id})'));
   }
 });
 

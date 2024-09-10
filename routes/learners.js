@@ -31,4 +31,16 @@ router.get("/new", async function (req, res, next) {
   }
 });
 
+// Render Edit Learner form
+router.get("/:id", async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const response = await axios.get(`${API_URL}/learners/${id}`);
+    DEBUG && console.debug(response);
+    res.render("learners/edit", { title: "Edit Learner", learner: response.data, menuItem: "learners" });
+  } catch (err) {
+    next(error(500, 'Error fetching learner (id:${id})'));
+  }
+});
+
 module.exports = router;

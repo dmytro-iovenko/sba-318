@@ -31,4 +31,16 @@ router.get("/new", async function (req, res, next) {
   }
 });
 
+// Render Edit Assignment form
+router.get("/:id", async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const response = await axios.get(`${API_URL}/assignments/${id}`);
+    DEBUG && console.debug(response);
+    res.render("assignments/edit", { title: "Edit Assignment", assignment: response.data, menuItem: "assignments" });
+  } catch (err) {
+    next(error(500, 'Error fetching assignment (id:${id})'));
+  }
+});
+
 module.exports = router;

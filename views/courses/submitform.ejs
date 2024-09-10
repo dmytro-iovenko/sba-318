@@ -3,14 +3,20 @@
   document.getElementById("courseForm").addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    const courseIdInput = document.getElementById("courseId");
+    const courseId = courseIdInput && courseIdInput.value;
+
     const courseNameInput = document.getElementById("courseName");
     const courseName = courseNameInput.value;
     const messageDiv = document.getElementById("message");
 
     try {
-      const response = await axios.post("/api/courses", {
+      const options = {
         name: courseName,
-      });
+      };
+      const response = courseId
+        ? await axios.patch(`/api/courses/${courseId}`, options)
+        : await axios.post("/api/courses", options);
       console.log("Success:", response);
 
       // Clear input field after successful submission

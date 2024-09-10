@@ -31,4 +31,16 @@ router.get("/new", async function (req, res, next) {
   }
 });
 
+// Render Edit Course form
+router.get("/:id", async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const response = await axios.get(`${API_URL}/courses/${id}`);
+    DEBUG && console.debug(response);
+    res.render("courses/edit", { title: "Edit Course", course: response.data, menuItem: "courses" });
+  } catch (err) {
+    next(error(500, 'Error fetching course (id:${id})'));
+  }
+});
+
 module.exports = router;

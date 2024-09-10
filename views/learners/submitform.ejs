@@ -3,6 +3,9 @@
   document.getElementById("learnerForm").addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    const learnerIdInput = document.getElementById("learnerId");
+    const learnerId = learnerIdInput && learnerIdInput.value;
+
     const learnerFirstNameInput = document.getElementById("learnerFirstName");
     const learnerFirstName = learnerFirstNameInput.value;
     const learnerLastNameInput = document.getElementById("learnerLastName");
@@ -12,13 +15,16 @@
     const messageDiv = document.getElementById("message");
 
     try {
-      const response = await axios.post("/api/learners", {
+      const options = {
         name: {
           first_name: learnerFirstName,
           last_name: learnerLastName,
         },
         email: learnerEmail,
-      });
+      };
+      const response = learnerId
+        ? await axios.patch(`/api/learners/${learnerId}`, options)
+        : await axios.post("/api/learners", options);
       console.log("Success:", response);
 
       // Clear input fields after successful submission
